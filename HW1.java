@@ -239,8 +239,7 @@ public class HW1 {
             return -1;
         }
 
-    }  // End class Stacks
-
+    }  // End class Stack
 
 
     /*******************************
