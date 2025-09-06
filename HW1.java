@@ -193,7 +193,7 @@ public class HW1 {
 
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
-            //high level overview -> put string into stack, then pop which should reverse order, then compare if equal
+            //high level overview -> put string into stack, then peek everytime which should reverse order, then compare if equal
 
 
             //when parsing the string into characters, consider spaces, skip them with ASCII with 32
@@ -236,7 +236,35 @@ public class HW1 {
         public static int findLargestK(Stack<Integer> stack, int k) {
 
             // YOUR CODE GOES HERE
-            return -1;
+            Stack<Integer> stack2 = new Stack<>();
+            int currentNum = 0;
+            int index = 0;
+            //position should be -1 if element k not found or empty stack, making it a default value
+            int position = -1;
+
+           if(stack.empty()){
+               return position;
+           } else {
+               //Must transfer everything over to the temporary stack, as suggested in the problem
+               //I tried stack.size() but its not the stack class, its from the vector class i think (checked the docs) so i had to count manually the num of elements in stack
+
+               while(!stack.empty()){
+                    currentNum = stack.pop();
+                    stack2.push(currentNum);
+                }
+
+               //for every single pop in the temp stack (which goes back to original stack), check if its the target value and note its position using indexes and incrementing it every pop
+               while(!stack2.empty()){
+                    currentNum = stack2.pop();
+                    if(currentNum == k){
+                        position = index;
+                    }
+                    stack.push(currentNum);
+                    index++;
+                }
+                return position;
+           }
+
         }
 
     }  // End class Stack
