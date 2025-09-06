@@ -1,7 +1,7 @@
 
 /*
  * *** PLACE YOUR NAME / SECTION  HERE ***
- *
+ * Erick Diaz COMP 272 002
  * Homework # 1 (Programming Assignment). This Java class defines some basic
  * manipulation operations on Linked-Lists and Stacks.
  *
@@ -86,9 +86,22 @@ public class HW1 {
          * found in the linked-list that is less than thr parameter value passed.
          */
         public void removeElementsLT ( int ltValue ) {
+            //remove each node until we hit a match for the ltValue
+            // if current.data < ltValue, remove and current.data will be the value
+            //ONLY SINCE LIST IS ALREADY SORTED from least to greatest!!!!
 
             // YOUR CODE GOES HERE
 
+            Node current = this.head;
+
+            if(current == null){
+                return;
+            } else {
+                while(current.next != null && current.data < ltValue){
+                    removeElement(current.data);
+                    current = current.next;
+                }
+            }
             return;
         }
 
@@ -100,8 +113,29 @@ public class HW1 {
 
         public void removeElement ( int value ) {
 
-            // YOUR CODE GOES HERE
+            Node current = this.head; //check for conditions
+            Node prev = null;
 
+            //Types of conditions:
+            /*
+                head is null; return;
+                head contains value; have the head refer to the next node
+             */
+            if(current == null){
+                return;
+            } else if (current.data == value){
+                head = current.next;
+            } else {
+                //iterate through LL
+                while(current.next != null){
+                    prev = current;
+                    current = current.next;
+                    if(current.data == value){
+                        //unlink previous node pointer and refer to current.next pointer
+                        prev.next = current.next;
+                    }
+                }
+            }
             return;
         }
 
@@ -216,7 +250,7 @@ public class HW1 {
          *   4. O(N * M) time, O(N + M) space
          *
          * TODO: return the answer (which option is correct), in the return statement
-        */
+         */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
         return -1;
