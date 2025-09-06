@@ -185,7 +185,7 @@ public class HW1 {
          * or 'false' on if the passed in parameter string is a palindrome or not.
          *
          * The routine should be case insensitive! Meaning 'RaCe cAr' is a palindrome.
-         * Moreover, spaces are ignore, so both 'race car' and 'racecar' are plaindromes.
+         * Moreover, spaces are ignore, so both 'race car' and 'racecar' are palindromes.
          *
          * The method should utilize the provided Stack class.
          */
@@ -193,7 +193,26 @@ public class HW1 {
 
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
+            //high level overview -> put string into stack, then pop which should reverse order, then compare if equal
 
+
+            //when parsing the string into characters, consider spaces, skip them with ASCII with 32
+            //error related to an integer within the string.....maybe skip them, what if i flip conditoins to only account [a-z] && [A-Z]
+            int inputLength = input.length();
+            String reversedInput = "";
+            for(int i = 0; i < input.length(); i++){
+                int currentChar = (int) input.charAt(i);
+                boolean upperCase = currentChar >= 65 && currentChar <= 90;
+                boolean lowerCase = currentChar >= 97 && currentChar <= 122;
+
+                if(lowerCase || upperCase){
+                    stack.push(input.charAt(i));
+                    reversedInput += stack.peek();
+                }
+            }
+            if(reversedInput.equalsIgnoreCase(input)){
+                return true;
+            }
             // Your CODE GOES HERE
             return false;
         }
