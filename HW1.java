@@ -299,7 +299,7 @@ public class HW1 {
          */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return 2;
+        return 1;
     }
 
 
