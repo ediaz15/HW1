@@ -1,7 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION  HERE ***
- * Erick Diaz COMP 272 002
+ * Erick Diaz (COMP 272 002)
  * Homework # 1 (Programming Assignment). This Java class defines some basic
  * manipulation operations on Linked-Lists and Stacks.
  *
@@ -84,19 +83,27 @@ public class HW1 {
          *
          * The method will invoke the method removeElements for each element
          * found in the linked-list that is less than thr parameter value passed.
+         *
          */
-        public void removeElementsLT ( int ltValue ) {
-            //remove each node until we hit a match for the ltValue
-            // if current.data < ltValue, remove and current.data will be the value
-            //ONLY SINCE LIST IS ALREADY SORTED from least to greatest!!!!
 
-            // YOUR CODE GOES HERE
+        /**
+         * Mutator Method: removeElementsLT()
+         * @param ltValue
+         * @return void
+         * pre: LinkedList must NOT be empty
+         *
+         * removeElementsLT() will traverse a given LinkedList, check for any values less than the 'ltValue', and remove them.
+         * Note: removeElementsLT() utilizes the removeElement() function below
+         */
+
+        public void removeElementsLT ( int ltValue ) {
 
             Node current = this.head;
-
+            //checks if the LinkedList is empty
             if(current == null){
                 return;
             } else {
+                //Using removeElement(), traverse through LinkedList and remove each node if their data less than 'ltValue'
                 while(current.next != null && current.data < ltValue){
                     removeElement(current.data);
                     current = current.next;
@@ -109,29 +116,39 @@ public class HW1 {
         /*
          * Method removeElement() - this method removes all nodes that contain a
          * value equal to the value the provided parameter 'value'.
+         *
          */
 
+        /**
+         * Mutator method: removeElement()
+         * @param value
+         * @return void
+         *
+         * pre: LinkedList must NOT be empty
+         *
+         * removeElement() will traverse through a given LinkedList and locate a node with the value EQUAL to the input variable 'value' and remove/unlink it.
+         *
+         */
         public void removeElement ( int value ) {
 
-            Node current = this.head; //check for conditions
+            Node current = this.head;
             Node prev = null;
 
-            //Types of conditions:
-            /*
-                head is null; return;
-                head contains value; have the head refer to the next node
-             */
+            //check for empty LinkedList
             if(current == null){
                 return;
+            //check if the data of the head of the LinkedList is equal to the input variable 'value'
             } else if (current.data == value){
                 head = current.next;
+                return;
             } else {
-                //iterate through LL
+                //traverse through LL while keeping note of previous node and current node links
                 while(current.next != null){
                     prev = current;
                     current = current.next;
+                    //unlinks current node if its data is equal to the input variable 'value'
                     if(current.data == value){
-                        //unlink previous node pointer and refer to current.next pointer
+                        //unlinks previous node pointer and refers to current's next node pointer
                         prev.next = current.next;
                     }
                 }
@@ -189,32 +206,44 @@ public class HW1 {
          *
          * The method should utilize the provided Stack class.
          */
+
+        /**
+         * Mutator method: isPalindrome()
+         * pre: input string must NOT be empty
+         * @param input
+         * @return boolean
+         *
+         * isPalindrome will store the string input variable in a temporary stack.
+         * This results in a reversed string that will be used to check if the input is a palindrome by equality.
+         */
         public static boolean isPalindrome(String input) {
 
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
-            //high level overview -> put string into stack, then peek everytime which should reverse order, then compare if equal
 
-
-            //when parsing the string into characters, consider spaces, skip them with ASCII with 32
-            //error related to an integer within the string.....maybe skip them, what if i flip conditoins to only account [a-z] && [A-Z]
             int inputLength = input.length();
             String reversedInput = "";
+            boolean palindrome = false;
+
             for(int i = 0; i < input.length(); i++){
+
+                //using ASCII values, convert each char in input string to integers
                 int currentChar = (int) input.charAt(i);
+
+                //ASCII values that are [a-z] or [A-Z] are in range [65,90] and [97, 122] and checks whether a given character falls under them
                 boolean upperCase = currentChar >= 65 && currentChar <= 90;
                 boolean lowerCase = currentChar >= 97 && currentChar <= 122;
-
+                //each char is stored in the temporary stack and is then pushed out to be stored in a reversedInput string
                 if(lowerCase || upperCase){
                     stack.push(input.charAt(i));
                     reversedInput += stack.peek();
                 }
             }
+            //checks whether the input and reverseInput strings match (checking again for case insensitivity)
             if(reversedInput.equalsIgnoreCase(input)){
-                return true;
+                return !palindrome;
             }
-            // Your CODE GOES HERE
-            return false;
+            return palindrome;
         }
 
 
@@ -233,27 +262,42 @@ public class HW1 {
          * pop elements off the passed in stack, place them in a temp stack. Then when
          * completed, place them all back in teh original stack.
          */
+
+        /**
+         * Accessor methodL findLargestK()
+         * pre: stack must NOT be empty
+         * @param stack
+         * @param k
+         * @return position
+         *
+         * findLargestK() takes in both a stack and an integer 'k' and locates the position of such integer in the stack (assuming its present)
+         * By utilizing a temp stack, findLargestK() notes each number's index in the stack and as it returns such integers to the original stack, notes their position.
+         * Then, the method continues to check if another integer like integer k is present, but higher up in the stack, and notes its position.
+         * If the integer k is not located, findLargestK()
+         */
         public static int findLargestK(Stack<Integer> stack, int k) {
 
-            // YOUR CODE GOES HERE
             Stack<Integer> stack2 = new Stack<>();
             int currentNum = 0;
             int index = 0;
             //position should be -1 if element k not found or empty stack, making it a default value
             int position = -1;
 
+            //checks for empty stack
            if(stack.empty()){
                return position;
            } else {
-               //Must transfer everything over to the temporary stack, as suggested in the problem
-               //I tried stack.size() but its not the stack class, its from the vector class i think (checked the docs) so i had to count manually the num of elements in stack
 
+               //Accounts for the number of integers in original stack then transfers them to the temp stack
+               //NOTE: could've used stack.size() here but going to the oracle docs, its not stack class, its inherit from vector class..
                while(!stack.empty()){
                     currentNum = stack.pop();
                     stack2.push(currentNum);
                 }
 
                //for every single pop in the temp stack (which goes back to original stack), check if its the target value and note its position using indexes and incrementing it every pop
+               //Traverses the temp stack and accounts for matching integers to k
+               //the higher the index, the more it would be in a higher position of the stack
                while(!stack2.empty()){
                     currentNum = stack2.pop();
                     if(currentNum == k){
@@ -282,12 +326,13 @@ public class HW1 {
     public static int algorithmAnalysis1(int n, int m) {
         int a = 0, b = 0;
 
-        for (int i=0; i < n; i++)
-            a+= Math.random();
+        for (int i=0; i < n; i++) //up to n and increments by 1 -> O(N)
+            a+= Math.random(); //constant
 
-        for (int j=0; j < m; j++)
-            b+= Math.random();
-
+        for (int j=0; j < m; j++) //up to m and increments by 1 -> O(M)
+            b+= Math.random();//constant
+        // N + 1 + M + 1 -> N + M + 2 -> (drop constants) -> O(N+M) time complexity
+        //This method doesn't take in any data structures nor iterates through one... so O(1) for space complexity...
         /*
          * Select the correct option listed below:
          *   1. O(N * M) time, O(1) space
@@ -305,10 +350,13 @@ public class HW1 {
 
     public static int algorithmAnalysis2(int n) {
         int i, j, k = 0;
-        for (i = n/2; i <= n; i++)
-            for ( j = 2; j <= n; j = j*2 )
+        for (i = n/2; i <= n; i++) //outer loop increments by 1, so O(N)
+            for ( j = 2; j <= n; j = j*2 ) //inner loop multiples by 2, exponentially increases, meaning O(log n)
                 k+= n/2;
-
+        //IDK how to write the formula here, but could it be like
+        //(counting the 6 for loop related constants and the reassignmen inside the inner loop)?
+        //write like this?: ((1/2 * N)+ 3) * (log N + 4)??...
+        // Regardless.... we drop constants -> O(N log N) time complexity!
         /*
          * Select the correct option listed below:
          *   1. O(N) time
